@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-namespace calculator {
+namespace CalcCore {
 const int MAXORDER = 1000;
 
 class Polynomial {
@@ -14,7 +14,10 @@ class Polynomial {
   int data[MAXORDER + 1];
   int maxOrder;
   // auxilary
+  int num2str(std::string);
+  bool insert(std::string tuple);
   bool copyData(int* data, const int* origin, int size);
+  bool convert(const std::string str);
 
  public:
   // constructor
@@ -27,14 +30,14 @@ class Polynomial {
 
   // accessor
   inline int getMaxOrder() const;
-  inline std::string getPolynominal() const;
+  inline std::string getPolynomial() const;
 
   // mutator
   bool clear();
-  bool setPolynominal(const std::string);
-  bool setPolynominal(const int* array, const int maxOrder);
+  bool setPolynomial(const std::string);
+  bool setPolynomial(const int* array, const int maxOrder);
   inline bool setMaxOrder(const int x);
-  bool modifyPolynominal(const int order, const int coefficient);
+  bool modifyPolynomial(const int order, const int coefficient);
 
 #ifdef DEBUG_
   int* getAddr() { return data; }
@@ -60,10 +63,10 @@ class Polynomial {
   //  int& operator[](const int x);
   //  friend Polynomial operator-(Polynomial& origin);
 
-  friend std::istream operator<<(std::istream out, Polynomial& current);
-  friend std::istream operator>>(std::istream in, Polynomial& current);
+  friend std::ostream& operator<<(std::ostream& out, Polynomial& current);
+  friend std::istream& operator>>(std::istream& in, Polynomial& current);
 };
 inline int Polynomial::getMaxOrder() const { return maxOrder; }
-}  // namespace calculator
+}  // namespace CalcCore
 
 #endif

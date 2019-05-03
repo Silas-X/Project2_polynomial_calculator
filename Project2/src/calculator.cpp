@@ -1,9 +1,11 @@
 #include "calculator.h"
+#include <cstring>
+#include <iostream>
+#include <sstream>
 #include <string>
-
 #define DEBUG_
-namespace calculator {
-Polynomial::Polynomial() : data{0},maxOrder{0} {}
+namespace CalcCore {
+Polynomial::Polynomial() : data{0}, maxOrder{0} {}
 Polynomial::Polynomial(std::string) {}  // TODO:Convert String to Polynomial;
 Polynomial::Polynomial(const Polynomial& origin) {
   this->maxOrder = origin.maxOrder;
@@ -15,9 +17,67 @@ Polynomial::~Polynomial() {
   data[0] = 0;
 }
 
+// auxiliary
+//TODO: The dread string operation makes me crazy, any other better methods?
+int Polynomial::num2str(std::string str) {
+  int res;
+  std::stringstream ss;
+  ss.clear();
+  ss << str;
+  ss >> res;
+  return res;
+}
+
+bool Polynomial::insert(std::string tuple) {
+  int pos = tuple.find(',');
+  if (pos == std::string::npos) return false;
+
+  std::string num;
+
+  for (int i = 0; i < pos; i++) {
+    if (!isdigit(tuple[i])) return false;
+    num += tuple[i];
+  }
+  int coefficient = num2str(num);
+  num.clear();
+
+  for (int i = pos + 1; i < tuple.size(); i++) {
+    if (!isdigit(tuple[i])) return false;
+    num += tuple[i];
+  }
+
+  int order = num2str(num);
+  if (order > CalcCore::MAXORDER) return false;
+  this->data[order]+ = coefficient;
+  if (order > this->maxOrder) this->maxOrder = order;
+  return true;
+}
+
 bool Polynomial::copyData(int* data, const int* origin, int size) {
   if (size > MAXORDER) return false;
   for (int i = 0; i < size; i++) data[i] = origin[i];
+  return true;
+}
+
+bool Polynomial::convert(const std::string str) {
+  if (str[0] != '(') return false;
+  std::string temp = str;
+  while (!temp.empty()) {
+    int pos_1 = temp.find('(');
+    int pos_2 = temp.find(')');
+
+//    if (pos_2 = std::string::npos && pos_1 != std::string::npos) return false;
+    if (pos_1 >= pos_2) return false;
+
+    std::string tuple = "";
+
+    for (int i = pos_1 + 1; i < pos_2; i++) {
+      tuple = tuple + temp[i];
+    }
+
+    if (!insert(tuple)) return false;
+    temp.erase(pos_1, pos_2 - pos_1 + 1);
+  }
   return true;
 }
 
@@ -107,4 +167,14 @@ Polynomial Polynomial::operator*(const Polynomial& another) {
   return res;
 }
 */
-}  // namespace calculator
+std::istream& operator>>(std::istream& in, Polynomial& current) {
+  std::string temp;
+  in >> temp;
+  while (current.convert(temp) == false) {
+    std::cout << "Invalid input" << std::endl
+              << "Please re-enter the expression" << std::endl;
+    in >> temp;
+  }
+  return in;
+}
+}  // namespace CalcCore

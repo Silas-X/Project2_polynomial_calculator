@@ -1,8 +1,11 @@
 #define DEBUG_
 #include <iostream>
 #include "calculator.h"
-using namespace calculator;
+using namespace CalcCore;
 
+#ifdef DEBUG_
+#include "calculator.cpp"
+#endif  // DEBUG_
 struct data {
   int num[1000];
   int maxOrder;
@@ -15,23 +18,30 @@ struct data {
 
 void print(Polynomial current) {
   for (int i = current.getMaxOrder(); i >= 0; i--) {
-    if (i > 0) std::cout << current.at(i) << "x^" << i << "+";
-    else std::cout << current.at(i);
+    if (i > 0)
+      std::cout << current.at(i) << "x^" << i << "+";
+    else
+      std::cout << current.at(i);
   }
   std::cout << std::endl;
 }
 
 int main() {
   Polynomial num_1, num_2;
-  int num1[3] = {3, 2, 1};
-  int num2[4] = {2, 1};
-  num_1.setPolynomial(num1, 2);
-  num_2.setPolynomial(num2, 1);
+  // int num1[3] = {3, 2, 1};
+  // int num2[4] = {2, 1};
+  // num_1.setPolynomial(num1, 2);
+  // num_2.setPolynomial(num2, 1);
+  // print(num_1 + num_2);
+  // print(num_1 - num_2);
+  // print(num_1 * num_2);
+  std::cout << "Please enter the expression 1" << std::endl;
+  std::cin >> num_1;
+
+  std::cout << "Please enter the expression 1" << std::endl;
+  std::cin >> num_2;
   print(num_1);
   print(num_2);
-  print(num_1 + num_2);
-  print(num_1 - num_2);
-  print(num_1 * num_2);
 
   return 0;
 }
