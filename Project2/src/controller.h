@@ -1,15 +1,19 @@
 #pragma once
 #ifndef POLYCALC_CONTROLLER_H_
 #define POLYCALC_CONTROLLER_H_
+#include "UI.h"
 #include "calculator.h"
-
 namespace ctl {
+
 const int MAXSTORAGE = 26;
 class controller {  // should be singleton Only one
  private:
   CalcCore::Polynomial*
       storage[MAXSTORAGE];  // store the expression mapped by "A"-"Z"
   int numbers;
+  static controller* commander;
+
+  // CalcCore::Polynomial findPolynominal(char sym) const;
   // Singleton contructor
   controller();
 
@@ -17,14 +21,17 @@ class controller {  // should be singleton Only one
   ~controller();
 
   // accessor
-  CalcCore::Polynomial getPolynominal(char sym) const;
-  int getTotalNumbers() const;
-
+  // bool getPolynominal(char sym, CalcCore::Polynomial current) const;
+  // int getTotalNumbers() const;
+  // void showMemory() const;
   // mutator
-  bool storeIt(char sym);
-  bool clear();
+  // bool storeIt(char sym);
+  // bool clear();
+  // Problem  with Namespace UI UI::UserInterface Menu;
+  UI::UserInterface Menu;
   // singleton creator;
-  bool butler();
+  static controller* init();
+  void start();
 };
 
 }  // namespace ctl

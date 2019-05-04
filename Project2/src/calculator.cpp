@@ -18,7 +18,7 @@ Polynomial::~Polynomial() {
 }
 
 // auxiliary
-//TODO: The dread string operation makes me crazy, any other better methods?
+// TODO: The dread string operation makes me crazy, any other better methods?
 int Polynomial::num2str(std::string str) {
   int res;
   std::stringstream ss;
@@ -48,7 +48,7 @@ bool Polynomial::insert(std::string tuple) {
 
   int order = num2str(num);
   if (order > CalcCore::MAXORDER) return false;
-  this->data[order]+ = coefficient;
+  this->data[order] += coefficient;
   if (order > this->maxOrder) this->maxOrder = order;
   return true;
 }
@@ -66,7 +66,8 @@ bool Polynomial::convert(const std::string str) {
     int pos_1 = temp.find('(');
     int pos_2 = temp.find(')');
 
-//    if (pos_2 = std::string::npos && pos_1 != std::string::npos) return false;
+    //    if (pos_2 = std::string::npos && pos_1 != std::string::npos) return
+    //    false;
     if (pos_1 >= pos_2) return false;
 
     std::string tuple = "";

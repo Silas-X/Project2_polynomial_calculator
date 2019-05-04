@@ -1,9 +1,13 @@
-#define DEBUG_
+//#define DEBUG_
 #include <iostream>
+#include "UI.h"
 #include "calculator.h"
+#include "controller.h"
 using namespace CalcCore;
 
 #ifdef DEBUG_
+#include "UI.cpp"
+#include"controller.cpp"
 #include "calculator.cpp"
 #endif  // DEBUG_
 struct data {
@@ -28,21 +32,7 @@ void print(Polynomial current) {
 }
 
 int main() {
-  Polynomial num_1, num_2;
-  // int num1[3] = {3, 2, 1};
-  // int num2[4] = {2, 1};
-  // num_1.setPolynomial(num1, 2);
-  // num_2.setPolynomial(num2, 1);
-  // print(num_1 + num_2);
-  // print(num_1 - num_2);
-  // print(num_1 * num_2);
-  std::cout << "Please enter the expression 1" << std::endl;
-  std::cin >> num_1;
-
-  std::cout << "Please enter the expression 1" << std::endl;
-  std::cin >> num_2;
-  print(num_1);
-  print(num_2);
-
+  ctl::controller* Calculator = ctl::controller::init();
+  Calculator->start();
   return 0;
 }
