@@ -4,6 +4,33 @@
 #include <sstream>
 #include <string>
 #define DEBUG_
+
+//namespace UI {
+class UserInterface {
+ private:
+  int opt;
+  int callMenu;
+  std::string opt_str;
+
+ public:
+  UserInterface(/* args */);
+  ~UserInterface();
+  // accessors
+  int getOption() const;
+  int getNext() const;
+  // mutator
+  bool setCallMenu(int opt);
+  void dispatch();
+  bool setOption();
+  void welcomePage();  // 0
+  void sayGoodbye();   //-1
+  void mainMenu();     // 1
+  void calcMenu();     // 2
+                       // friend void ctl::controller::start();
+};
+
+//}  // namespace UI
+
 namespace CalcCore {
 Polynomial::Polynomial() : data{0}, maxOrder{0} {}
 Polynomial::Polynomial(std::string) {}  // TODO:Convert String to Polynomial;

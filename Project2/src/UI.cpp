@@ -2,7 +2,7 @@
 #include "UI.h"
 #include <iostream>
 #include <string>
-namespace UI {
+//namespace UI {
 UserInterface::UserInterface() : opt{0}, opt_str{""}, callMenu{0} {}
 UserInterface::~UserInterface() {}
 
@@ -94,4 +94,4 @@ void UserInterface::mainMenu() {
     //   getNum(opt);
   }
 }
-}  // namespace UI
+//}  // namespace UI

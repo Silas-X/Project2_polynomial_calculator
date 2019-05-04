@@ -3,7 +3,7 @@
 #define SRC_UI_H_
 #include "controller.h"
 
-namespace UI {
+//namespace UI {
 class UserInterface {
  private:
   int opt;
@@ -27,6 +27,6 @@ class UserInterface {
                        // friend void ctl::controller::start();
 };
 
-}  // namespace UI
+//}  // namespace UI
 
 #endif  // SRC_MENU_H_

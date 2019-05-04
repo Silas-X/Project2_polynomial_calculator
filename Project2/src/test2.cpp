@@ -1,15 +1,10 @@
 //#define DEBUG_
 #include <iostream>
-#include "UI.h"
+//#include "UI.h"
 #include "calculator.h"
 #include "controller.h"
 using namespace CalcCore;
 
-#ifdef DEBUG_
-#include "UI.cpp"
-#include"controller.cpp"
-#include "calculator.cpp"
-#endif  // DEBUG_
 struct data {
   int num[1000];
   int maxOrder;
@@ -32,7 +27,7 @@ void print(Polynomial current) {
 }
 
 int main() {
-  ctl::controller* Calculator = ctl::controller::init();
+  controller* Calculator = controller::init();
   Calculator->start();
   return 0;
 }
