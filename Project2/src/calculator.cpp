@@ -5,7 +5,6 @@
 #include <string>
 #define DEBUG_
 
-
 namespace CalcCore {
 Polynomial::Polynomial() : data{0}, maxOrder{0} {}
 Polynomial::Polynomial(std::string) {}  // TODO:Convert String to Polynomial;
@@ -173,11 +172,23 @@ Polynomial Polynomial::operator*(const Polynomial& another) {
 std::istream& operator>>(std::istream& in, Polynomial& current) {
   std::string temp;
   in >> temp;
+  current.clear();
   while (current.convert(temp) == false) {
     std::cout << "Invalid input" << std::endl
               << "Please re-enter the expression" << std::endl;
     in >> temp;
   }
   return in;
+}
+
+std::ostream& operator<<(std::ostream& out, Polynomial& current) {
+  for (int i = current.getMaxOrder(); i >= 0; i--) {
+    if (current.data[i] == 0) continue;
+    if (i > 0)
+      std::cout << "+" << current.data[i] << "x^" << i;
+    else
+      std::cout << current.data[i];
+  }
+  return out;
 }
 }  // namespace CalcCore

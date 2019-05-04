@@ -1,6 +1,7 @@
 //#define DEBUG_
 #include <iostream>
 //#include "UI.h"
+#include "UI.h"
 #include "calculator.h"
 #include "controller.h"
 using namespace CalcCore;
@@ -27,7 +28,8 @@ void print(Polynomial current) {
 }
 
 int main() {
-  ctl::controller* Calculator = ctl::controller::init();
-  Calculator->start();
+  ctl::controller* _controller = ctl::controller::init();
+  UI::UserInterface calculator{_controller};
+  calculator.dispatch();
   return 0;
 }

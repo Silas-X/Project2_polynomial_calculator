@@ -1,35 +1,7 @@
 #pragma once
 #ifndef POLYCALC_CONTROLLER_H_
 #define POLYCALC_CONTROLLER_H_
-//#include "UI.h"
 #include "calculator.h"
-
-namespace UI {
-class UserInterface {
- private:
-  int opt;
-  int callMenu;
-  std::string opt_str;
-
- public:
-  UserInterface();
-  ~UserInterface();
-  // accessors
-  int getOption() const;
-  int getNext() const;
-  // mutator
-  bool setCallMenu(int opt);
-  void dispatch();
-  bool setOption();
-  void welcomePage();  // 0
-  void sayGoodbye();   //-1
-  void mainMenu();     // 1
-  void calcMenu();     // 2
-                       // friend void ctl::controller::start();
-};
-
-}  // namespace UI
-
 
 namespace ctl {
 
@@ -51,15 +23,16 @@ class controller {  // should be singleton Only one
   // accessor
   // bool getPolynominal(char sym, CalcCore::Polynomial current) const;
   // int getTotalNumbers() const;
-  // void showMemory() const;
+  bool isEmpty() const;
+  void showMemory() const;
+
   // mutator
-  // bool storeIt(char sym);
-  // bool clear();
+  bool storeIt(char sym, CalcCore::Polynomial& temp);
+   bool clear();
   // Problem  with Namespace UI UI::UserInterface Menu;
-  UI::UserInterface Menu;
+  //  UI::UserInterface Menu;
   // singleton creator;
   static controller* init();
-  void start();
 };
 
 }  // namespace ctl
