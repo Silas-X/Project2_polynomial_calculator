@@ -3,7 +3,8 @@
 #define POLYCALC_CONTROLLER_H_
 //#include "UI.h"
 #include "calculator.h"
-// namespace UI {
+
+namespace UI {
 class UserInterface {
  private:
   int opt;
@@ -11,7 +12,7 @@ class UserInterface {
   std::string opt_str;
 
  public:
-  UserInterface(/* args */);
+  UserInterface();
   ~UserInterface();
   // accessors
   int getOption() const;
@@ -27,9 +28,10 @@ class UserInterface {
                        // friend void ctl::controller::start();
 };
 
-//}  // namespace UI
+}  // namespace UI
 
-// namespace ctl {
+
+namespace ctl {
 
 const int MAXSTORAGE = 26;
 class controller {  // should be singleton Only one
@@ -54,12 +56,12 @@ class controller {  // should be singleton Only one
   // bool storeIt(char sym);
   // bool clear();
   // Problem  with Namespace UI UI::UserInterface Menu;
-  UserInterface Menu;
+  UI::UserInterface Menu;
   // singleton creator;
   static controller* init();
   void start();
 };
 
-//}  // namespace ctl
+}  // namespace ctl
 
 #endif  // POLYCALC_CONTROLLER_H_

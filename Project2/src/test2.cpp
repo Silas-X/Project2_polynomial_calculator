@@ -27,7 +27,7 @@ void print(Polynomial current) {
 }
 
 int main() {
-  controller* Calculator = controller::init();
+  ctl::controller* Calculator = ctl::controller::init();
   Calculator->start();
   return 0;
 }

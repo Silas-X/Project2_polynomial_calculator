@@ -1,7 +1,8 @@
 #include "controller.h"
 //#include "UI.h"
-// namespace UI {
-UserInterface::UserInterface() : opt{0}, opt_str{""}, callMenu{0} {}
+
+namespace UI {
+UserInterface::UserInterface() : opt{0}, callMenu{0}, opt_str{""} {}
 UserInterface::~UserInterface() {}
 
 bool UserInterface::setCallMenu(int opt) {
@@ -46,11 +47,11 @@ bool UserInterface::setOption() {
       return true;
     }
     std::cout << "Invalid, please re-enter " << std::endl;
-    /*    if (opt_str.size() == 1 && (opt_str[0] == 'x' || opt_str[0] == 'X')) {
-          valid = true;
-          std::cout << "Warning abandon" << std::endl;
-          break;
-        }*/
+    if (opt_str.size() == 1 && (opt_str[0] == 'x' || opt_str[0] == 'X')) {
+      valid = true;
+      std::cout << "Warning abandon" << std::endl;
+      break;
+    }
   }
   return false;
 }
@@ -98,9 +99,9 @@ void UserInterface::mainMenu() {
     callMenu = 0;
   }
 }
-//}  // namespace UI
+}  // namespace UI
 
-// namespace ctl {
+namespace ctl {
 controller::controller() : numbers{0} {
   for (int i = 0; i < MAXSTORAGE; i++) {
     storage[i] = NULL;
@@ -126,4 +127,4 @@ void controller::start() {
 }
 
 controller* controller::commander = NULL;
-//}  // namespace ctl
+}  // namespace ctl
