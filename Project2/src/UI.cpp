@@ -71,25 +71,22 @@ void UserInterface::welcomePage() {
   cout << "\t------------------------------------------------------------------"
           "---\t"
        << endl;
-  bool exitFlag = false;
-  while (!exitFlag) {
-    setOption();
-    switch (getOption()) {
-      case 0:
-        sayGoodbye();
-        exitFlag = true;
-        callMenu = -1;
-        break;
-      case 1:
-        callMenu = 1;
-        exitFlag = true;
-        break;
-      default:
-        std::cout << "Invalid Input" << std::endl;
-        break;
-    }
-    system("PAUSE");
+  setCallMenu(0);
+  setOption();
+  switch (getOption()) {
+    case 0:
+      sayGoodbye();
+      setCallMenu(-1);
+      break;
+    case 1:
+      setCallMenu(1);
+      break;
+    default:
+      std::cout << "Invalid Input" << std::endl;
+      break;
   }
+  system("PAUSE");
+
   return;
 }
 void UserInterface::sayGoodbye() {
@@ -97,39 +94,63 @@ void UserInterface::sayGoodbye() {
   return;
 }
 void UserInterface::mainMenu() {
-  bool exitFlag = false;
-  std::cout << "Still in progress, goodbye" << std::endl;
-  while (!exitFlag) {
-    std::cout << "[1]\t Show Memory" << std::endl;
-    std::cout << "[2]\t add new Expression" << std::endl;
-    std::cout << "[3]\t calculate Expression" << std::endl;
-    std::cout << "[0]\t return to upper menu" << std::endl;
-    setOption();
-    switch (getOption()) {
-      case 0:
-        exitFlag = true;
-        std::cout << "Return to Upper Menu" << std::endl;
-        break;
-      case 1:
-        butler->showMemory();
-        // std::cout << "==================" <<std::endl;
-        break;
-      case 2: {
-        std::cout << "Please input the symbol and expression" << std::endl;
-        std::cout << "Format: sym expression" << std::endl;
-        CalcCore::Polynomial temp;
-        char sym;
-        std::cin >> sym;
-        std::cin >> temp;
-        butler->storeIt(sym, temp);
-        break;
-      }
-      default:
-        std ::cout << "Invalid Input" << std::endl;
-        break;
+  std::cout << "[1]\t Show Memory" << std::endl;
+  std::cout << "[2]\t add new Expression" << std::endl;
+  std::cout << "[3]\t calculate Expression" << std::endl;
+  std::cout << "[0]\t return to upper menu" << std::endl;
+  setCallMenu(1);
+  setOption();
+  switch (getOption()) {
+    case 0:
+      // exitFlag = true;
+      std::cout << "Return to Upper Menu" << std::endl;
+      setCallMenu(0);
+      break;
+    case 1:
+      butler->showMemory();
+      // std::cout << "==================" <<std::endl;
+      break;
+    case 2: {
+      std::cout << "Please input the symbol and expression" << std::endl;
+      std::cout << "Format: sym expression" << std::endl;
+      CalcCore::Polynomial temp;
+      char sym;
+      std::cin >> sym;
+      std::cin >> temp;
+      butler->storeIt(sym, temp);
+      break;
     }
-    system("PAUSE");
+    case 3:
+      setCallMenu(2);
+      break;
+    default:
+      std ::cout << "Invalid Input" << std::endl;
+      break;
   }
-  callMenu = 0;
+  system("PAUSE");
+}
+
+void UserInterface::calcMenu() {
+  system("CLEAR");
+  std::cout << "=======WELCOME TO CALCULATOR==========" << std::endl;
+  std::cout << "Introduction" << std::endl;
+  std::cout << "[1] Add new expression to the memory" << std::endl;
+  std::cout << "[2] View Memory" << std::endl;
+  std::cout << "[3] Addition" << std::endl;
+  std::cout << "[4] Substraction" << std::endl;
+  std::cout << "[5] Multiplication" << std::endl;
+  std::cout << "[6] Derivation" << std::endl;
+  std::cout << "[0] Return to upper menu" << std::endl;
+  setCallMenu(2);
+  setOption();
+  switch (getOption()) {
+    case 0:
+      setCallMenu(1);
+      break;
+    case 1:
+      break;
+    default:
+      break;
+  }
 }
 }  // namespace UI

@@ -69,6 +69,33 @@ bool controller::clear() {
   return true;
 }
 
+CalcCore::Polynomial& controller::addition() {
+  CalcCore::Polynomial num1;
+  CalcCore::Polynomial num2;
+  setExpression(num1);
+  setExpression(num2);
+  return num1 + num2;
+}
+
+CalcCore::Polynomial& controller::substraction() {
+  CalcCore::Polynomial num1;
+  CalcCore::Polynomial num2;
+  setExpression(num1);
+  setExpression(num2);
+  return num1 - num2;
+}
+
+CalcCore::Polynomial& controller::multiplication() {
+  CalcCore::Polynomial num1;
+  CalcCore::Polynomial num2;
+  setExpression(num1);
+  setExpression(num2);
+  return num1 * num2;
+}
+
+bool CalcUnit(CalcCore::Polynomial& (*process)()) {
+  CalcCore::Polynomial temp{process()};
+}
 // static members
 controller* controller::commander = NULL;
 }  // namespace ctl

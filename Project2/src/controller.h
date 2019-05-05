@@ -2,7 +2,6 @@
 #ifndef POLYCALC_CONTROLLER_H_
 #define POLYCALC_CONTROLLER_H_
 #include "calculator.h"
-
 namespace ctl {
 
 const int MAXSTORAGE = 26;
@@ -10,6 +9,7 @@ class controller {  // should be singleton Only one
  private:
   CalcCore::Polynomial*
       storage[MAXSTORAGE];  // store the expression mapped by "A"-"Z"
+  CalcCore::Polynomial expression1, expression2, last_res;
   int numbers;
   static controller* commander;
 
@@ -28,9 +28,15 @@ class controller {  // should be singleton Only one
 
   // mutator
   bool storeIt(char sym, CalcCore::Polynomial& temp);
-   bool clear();
-  // Problem  with Namespace UI UI::UserInterface Menu;
-  //  UI::UserInterface Menu;
+  bool clear();
+  bool CalcUnit(CalcCore::Polynomial& (*process)());
+  CalcCore::Polynomial& addition();
+  CalcCore::Polynomial& substraction();
+  CalcCore::Polynomial& multiplication();
+  CalcCore::Polynomial& derivation();
+  CalcCore::Polynomial& evaluation();
+  CalcCore::Polynomial& setExpression(CalcCore::Polynomial& expression);
+
   // singleton creator;
   static controller* init();
 };
