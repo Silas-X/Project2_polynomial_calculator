@@ -96,12 +96,14 @@ inline bool Polynomial::setMaxOrder(const int x) {
   maxOrder = x;
   return true;
 }
-bool Polynomial::setPolynomial(const std::string origin) {
+bool Polynomial::setPolynomial(std::string origin) {
   // TODO::readIn a String
-  return true;
+  this->clear();
+  return (this->convert(origin));
 }
 
 bool Polynomial::setPolynomial(const int* data, const int maxOrder) {
+  this->clear();
   if (maxOrder > MAXORDER) return false;
   this->maxOrder = maxOrder;
   copyData(this->data, data, maxOrder + 1);
@@ -117,12 +119,10 @@ Polynomial& Polynomial::reverse() {
   for (int i = 0; i <= this->maxOrder; i++) this->data[i] = -this->data[i];
   return *this;
 }
-#ifdef DEBUG_
-int& Polynomial::at(const int pos) { return this->data[pos]; }
-#endif
+
 Polynomial& Polynomial::operator=(const Polynomial& origin) {
   this->maxOrder = origin.maxOrder;
-  copyData(this->data, origin.data, maxOrder);
+  copyData(this->data, origin.data, maxOrder + 1);
   return *this;
 }
 
@@ -180,15 +180,28 @@ std::istream& operator>>(std::istream& in, Polynomial& current) {
   }
   return in;
 }
+/*
+bool operator>>(std::stringstream& in, Polynomial& current) {
+  
 
-std::ostream& operator<<(std::ostream& out, Polynomial& current) {
+}*/
+std::ostream& operator<<(std::ostream& out,const Polynomial& current) {
   for (int i = current.getMaxOrder(); i >= 0; i--) {
     if (current.data[i] == 0) continue;
-    if (i > 0)
-      std::cout << "+" << current.data[i] << "x^" << i;
-    else
+    /*if (i == 0) {
       std::cout << current.data[i];
+      continue;
+    }*/
+    if (i == current.getMaxOrder())
+      std::cout << current.data[i] << "x^" << i;
+    else {
+      if (current.data[i] < 0)
+        std::cout << " - " << -current.data[i] << "x^" << i;
+      else
+        std::cout << " + " << current.data[i] << "x^" << i;
+    }
   }
+  std::cout << std::endl;
   return out;
 }
 }  // namespace CalcCore
