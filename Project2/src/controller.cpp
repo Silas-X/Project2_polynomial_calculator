@@ -95,6 +95,9 @@ CalcCore::Polynomial& controller::multiplication() {
 
 bool CalcUnit(CalcCore::Polynomial& (*process)()) {
   CalcCore::Polynomial temp{process()};
+  std::cout << "Do you want to store your answer?" << std::endl;
+  // setOption();
+  // getOption();
 }
 // static members
 controller* controller::commander = NULL;
