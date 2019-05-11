@@ -2,12 +2,14 @@
 #include "UI.h"
 #include "calculator.h"
 #include "controller.h"
+
 //#define _DEBUG
 #ifdef _DEBUG
 #include "UI.cpp"
 #include "calculator.cpp"
 #include "controller.cpp"
 #endif
+
 using namespace CalcCore;
 
 int main() {

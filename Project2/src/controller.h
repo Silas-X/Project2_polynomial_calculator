@@ -4,7 +4,7 @@
 #include "calculator.h"
 
 namespace ctl {
-const std::string LASTANSWER = "LastAnswer";
+const std::string LASTANSWER = "RES";
 const int MAXSTORAGE = 26;
 class controller {  // should be singleton Only one
  private:
@@ -24,6 +24,7 @@ class controller {  // should be singleton Only one
   // accessor
   bool getPolynominal(std::string token, CalcCore::Polynomial& current) const;
   // int getTotalNumbers() const;
+  bool isExist(std::string token) const;
   bool isEmpty() const;
   bool isToken(std::string token) const;
   void showMemory() const;

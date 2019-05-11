@@ -1,8 +1,19 @@
 #include "UI.h"
+#include <unistd.h>
 #include <iostream>
 #include <string>
-
 namespace UI {
+
+void PauseIt() {
+  std::cout << "Press q or Q to continue" << std::endl;
+  std::string str;
+  std::cin >> str;
+  while (!(str == "q" || str == "Q")) {
+    std::cin >> str;
+  }
+  return;
+}
+
 UserInterface::UserInterface(ctl::controller*& _butler)
     : opt{0}, callMenu{0}, opt_str{""} {
   this->butler = _butler;
@@ -48,7 +59,7 @@ bool UserInterface::setOption() {
   bool valid = false;
   std::cout << "Please choose option" << std::endl;
   while (!valid) {
-    std::getline(std::cin, opt_str);
+    std::cin >> opt_str;
     if (opt_str.size() == 1 && isdigit(opt_str[0])) {
       valid = true;
       opt = opt_str[0] - 48;
@@ -63,13 +74,26 @@ void UserInterface::welcomePage() {
   using std::cout;
   using std::endl;
   setCallMenu(0);
-  cout << "\t|-------------------------------------------------------------------------|\t" << endl;
-  cout << "\t|                 Welcome To the polynomial calculator                    |\t" << endl;
-  cout << "\t|This is intended for Programming Courses Homework II                     |\t" << endl;
-  cout << "\t|Author: Silas XU                                                         |\t" << endl;
-  cout << "\t|If there is any problem while using, please fell free to contact with me.|\t" << endl;
-  cout << "\t|-------------------------------------------------------------------------|\t" << endl;
-  cout << "\tStart Program?(1 to start,o to exit)\t" << endl;
+  cout << "\t|-----------------------------------------------------------------"
+          "--------|\t"
+       << endl;
+  cout << "\t|                 Welcome To the polynomial calculator            "
+          "        |\t"
+       << endl;
+  cout << "\t|This is intended for Programming Courses Homework II             "
+          "        |\t"
+       << endl;
+  cout << "\t|Author: Silas XU                                                 "
+          "        |\t"
+       << endl;
+  cout << "\t|If there is any problem while using, please feel free to contact "
+          "with me.|\t"
+       << endl;
+  cout << "\t|-----------------------------------------------------------------"
+          "--------|\t"
+       << endl;
+  cout << endl;
+  cout << "Start Program?(1 to start,0 to exit)\t" << endl;
   setOption();
   switch (getOption()) {
     case 0:
@@ -82,8 +106,7 @@ void UserInterface::welcomePage() {
       std::cout << "Invalid Input" << std::endl;
       break;
   }
-  system("PAUSE");
-
+  PauseIt();
   return;
 }
 
@@ -92,6 +115,10 @@ void UserInterface::sayGoodbye() {
   return;
 }
 void UserInterface::mainMenu() {
+  StatusBar();
+  std::cout << "=======WELCOME TO CALCULATOR==========" << std::endl;
+  std::cout << "             Introduction             " << std::endl
+            << std::endl;
   std::cout << "[1]\t Show Memory" << std::endl;
   std::cout << "[2]\t add new Expression" << std::endl;
   std::cout << "[3]\t calculate Expression" << std::endl;
@@ -117,19 +144,22 @@ void UserInterface::mainMenu() {
       std ::cout << "Invalid Input" << std::endl;
       break;
   }
-  system("PAUSE");
+  PauseIt();
 }
 
 void UserInterface::calcMenu() {
   system("cls");
+  StatusBar();
   std::cout << "=======WELCOME TO CALCULATOR==========" << std::endl;
-  std::cout << "             Introduction             " << std::endl<<std::endl;
+  std::cout << "             Introduction             " << std::endl
+            << std::endl;
   std::cout << "[1] Add new expression to the memory" << std::endl;
   std::cout << "[2] View Memory" << std::endl;
   std::cout << "[3] Addition" << std::endl;
   std::cout << "[4] Substraction" << std::endl;
   std::cout << "[5] Multiplication" << std::endl;
   std::cout << "[6] Derivation" << std::endl;
+  std::cout << "[7] Evaluation" << std::endl;
   std::cout << "[0] Return to upper menu" << std::endl;
   setCallMenu(2);
   setOption();
@@ -155,10 +185,25 @@ void UserInterface::calcMenu() {
       butler->CalcUnit(ctl::controller::derivation);
       break;
     case 7:
-      //      butler->CalcUnit(ctl::controller::evaluation);
+      butler->CalcUnit(ctl::controller::evaluation);
     default:
       break;
   }
-  system("PAUSE");
+  PauseIt();
+}
+
+void UserInterface::StatusBar() {
+  int num = 0;
+  for (int i = 0; i <= ctl::MAXSTORAGE; i++) {
+    std::string token = "";
+    token += static_cast<char>(i + 'A');
+    if (butler->isExist(token)) {
+      std::cout << token<<" ";
+      num++;
+    }
+  }
+  if (num == 0) std::cout << "             Memory area is empty.        ";
+  std::cout << std::endl;
+  std::cout << "=========================================" << std::endl;
 }
 }  // namespace UI
