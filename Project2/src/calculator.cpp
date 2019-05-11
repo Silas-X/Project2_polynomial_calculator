@@ -169,6 +169,10 @@ Polynomial Polynomial::operator*(const Polynomial& another) {
 
 Polynomial Polynomial::D() {
   Polynomial res;
+  if (this->maxOrder == 0) {
+    res.clear();
+    return res;
+  }
   res.setMaxOrder(this->maxOrder - 1);
   for (int i = 0; i <= res.maxOrder; i++) {
     res.data[i] = this->data[i + 1] * (i + 1);
@@ -216,7 +220,7 @@ std::istream& operator>>(std::istream& in, Polynomial& current) {
 
 std::ostream& operator<<(std::ostream& out, const Polynomial& current) {
   for (int i = current.getMaxOrder(); i >= 0; i--) {
-    if (current.data[i] == 0) continue;
+    if (current.getMaxOrder() > 0 && current.data[i] == 0) continue;
     if (i == current.getMaxOrder())
       std::cout << current.data[i] << "x^" << i;
     else {

@@ -36,7 +36,14 @@ bool controller::getPolynominal(std::string token,
 }
 
 bool controller::isEmpty() const { return numbers; }
-
+bool controller::isToken(std::string token) const {
+  if (token == LASTANSWER) return true;
+  if (token.size() == 1) {
+    char sym = toupper(token[0]) - 'A';
+    if (sym >= 0 && sym < MAXSTORAGE) return true;
+  }
+  return false;
+}
 void controller::showMemory() const {
   for (int i = 0; i < MAXSTORAGE; i++) {
     char sym = i + 'A';
@@ -55,16 +62,33 @@ void controller::showMemory() const {
 // mutator
 bool controller::StoreUnit() {
   std::string token1, token2;
+  std::cout << "Please enter expression" << std::endl
+            << "Format: [symbol] [expression] or [symbol] [symbol]"
+            << std::endl;
   std::cin >> token1 >> token2;
-  if (!(TransferIt(token1, token2) || storeIt(token1, token2)))) {
-    std::cout<<"Invalid input!"<<std::endl;
+  if (!(TransferIt(token1, token2) || storeIt(token1, token2))) {
+    std::cout << "Invalid input!" << std::endl;
+    return false;
   }
-  std::cout << "SUCCESS" << std::endl
-            << token1 << " = " << getPolynominal(token1) << std::endl;
+  CalcCore::Polynomial temp;
+  getPolynominal(token1, temp);
+  std::cout << "SUCCESS" << std::endl << token1 << " = " << temp << std::endl;
   return true;
 }
-bool TransferIt(std::string token1, std::string token2) {}
-bool controller::storeIt(std::string token, CalcCore::Polynomial& temp) {
+
+bool controller::TransferIt(std::string token1, std::string token2) {
+  if (!(isToken(token1) && isToken(token2))) return false;
+  CalcCore::Polynomial temp;
+  if (!getPolynominal(token2, temp)) return false;
+  return storeIt(token1, temp);
+}
+
+bool controller::storeIt(std::string token1, std::string token2) {
+  CalcCore::Polynomial temp;
+  if (!temp.setPolynomial(token2)) return false;
+  return storeIt(token1, temp);
+}
+bool controller::storeIt(std::string token, CalcCore::Polynomial temp) {
   if (token == LASTANSWER) {
     last_res = temp;
     return true;

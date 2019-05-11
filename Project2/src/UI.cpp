@@ -62,20 +62,14 @@ bool UserInterface::setOption() {
 void UserInterface::welcomePage() {
   using std::cout;
   using std::endl;
-  cout << "\t------------------------------------------------------------------"
-          "---\t"
-       << endl;
-  cout << "\t|Welcome To the polynomial calculator\t|" << endl;
-  cout << "\t|This is intended for Programming Courses Homework II\t|" << endl;
-  cout << "\t|Author: Silas XU\t|" << endl;
-  cout << "\t|If there is any problem while using, please fell free to contact"
-          "with me.\t|"
-       << endl;
-  cout << "\t|Start Program?(1 to start,o to exit)\t|" << endl;
-  cout << "\t------------------------------------------------------------------"
-          "---\t"
-       << endl;
   setCallMenu(0);
+  cout << "\t|-------------------------------------------------------------------------\t|" << endl;
+  cout << "\t|                 Welcome To the polynomial calculator                    \t|" << endl;
+  cout << "\t|This is intended for Programming Courses Homework II                     \t|" << endl;
+  cout << "\t|Author: Silas XU                                                         \t|" << endl;
+  cout << "\t|If there is any problem while using, please fell free to contact with me.\t|" << endl;
+  cout << "\t|-------------------------------------------------------------------------\t|" << endl;
+  cout << "\tStart Program?(1 to start,o to exit)\t" << endl;
   setOption();
   switch (getOption()) {
     case 0:
@@ -92,6 +86,7 @@ void UserInterface::welcomePage() {
 
   return;
 }
+
 void UserInterface::sayGoodbye() {
   std::cout << "Goodbye" << std::endl;
   return;
@@ -105,22 +100,14 @@ void UserInterface::mainMenu() {
   setOption();
   switch (getOption()) {
     case 0:
-      // exitFlag = true;
       std::cout << "Return to Upper Menu" << std::endl;
       setCallMenu(0);
       break;
     case 1:
       butler->showMemory();
-      // std::cout << "==================" <<std::endl;
       break;
     case 2: {
-      std::cout << "Please input the symbol and expression" << std::endl;
-      std::cout << "Format: sym expression" << std::endl;
-      CalcCore::Polynomial temp;
-      std::string sym;
-      std::cin >> sym;
-      std::cin >> temp;
-      butler->storeIt(sym, temp);
+      butler->StoreUnit();
       break;
     }
     case 3:
@@ -136,7 +123,7 @@ void UserInterface::mainMenu() {
 void UserInterface::calcMenu() {
   system("cls");
   std::cout << "=======WELCOME TO CALCULATOR==========" << std::endl;
-  std::cout << "Introduction" << std::endl;
+  std::cout << "             Introduction             " << std::endl<<std::endl;
   std::cout << "[1] Add new expression to the memory" << std::endl;
   std::cout << "[2] View Memory" << std::endl;
   std::cout << "[3] Addition" << std::endl;
@@ -168,7 +155,7 @@ void UserInterface::calcMenu() {
       butler->CalcUnit(ctl::controller::derivation);
       break;
     case 7:
-     // butler->CalcUnit(ctl::controller::evaluation);
+      //      butler->CalcUnit(ctl::controller::evaluation);
     default:
       break;
   }

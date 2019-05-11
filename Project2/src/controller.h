@@ -31,7 +31,8 @@ class controller {  // should be singleton Only one
   // mutator
   bool StoreUnit();
   bool TransferIt(std::string token1, std::string token2);
-  bool storeIt(std::string token, CalcCore::Polynomial& temp);
+  bool storeIt(std::string token1, std::string token2);
+  bool storeIt(std::string token1, CalcCore::Polynomial temp);
   bool clear();
   bool CalcUnit(CalcCore::Polynomial (controller::*process)());
   CalcCore::Polynomial addition();
