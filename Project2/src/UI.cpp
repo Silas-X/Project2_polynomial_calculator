@@ -63,12 +63,12 @@ void UserInterface::welcomePage() {
   using std::cout;
   using std::endl;
   setCallMenu(0);
-  cout << "\t|-------------------------------------------------------------------------\t|" << endl;
-  cout << "\t|                 Welcome To the polynomial calculator                    \t|" << endl;
-  cout << "\t|This is intended for Programming Courses Homework II                     \t|" << endl;
-  cout << "\t|Author: Silas XU                                                         \t|" << endl;
-  cout << "\t|If there is any problem while using, please fell free to contact with me.\t|" << endl;
-  cout << "\t|-------------------------------------------------------------------------\t|" << endl;
+  cout << "\t|-------------------------------------------------------------------------|\t" << endl;
+  cout << "\t|                 Welcome To the polynomial calculator                    |\t" << endl;
+  cout << "\t|This is intended for Programming Courses Homework II                     |\t" << endl;
+  cout << "\t|Author: Silas XU                                                         |\t" << endl;
+  cout << "\t|If there is any problem while using, please fell free to contact with me.|\t" << endl;
+  cout << "\t|-------------------------------------------------------------------------|\t" << endl;
   cout << "\tStart Program?(1 to start,o to exit)\t" << endl;
   setOption();
   switch (getOption()) {
