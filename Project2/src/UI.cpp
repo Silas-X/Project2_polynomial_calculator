@@ -156,7 +156,7 @@ void UserInterface::calcMenu() {
       butler->showMemory();
       break;
     case 3:
-      butler->CalcUnit(ctl::controller::addition);
+      butler->CalcUnit(ctl::controller::addition);  //含修饰符的函数如何传递
       break;
     case 4:
       butler->CalcUnit(ctl::controller::substraction);
@@ -165,7 +165,10 @@ void UserInterface::calcMenu() {
       butler->CalcUnit(ctl::controller::multiplication);
       break;
     case 6:
-      // butler->CalcUnit()
+      butler->CalcUnit(ctl::controller::derivation);
+      break;
+    case 7:
+     // butler->CalcUnit(ctl::controller::evaluation);
     default:
       break;
   }

@@ -26,12 +26,12 @@ class Polynomial {
 
   // destructor
   ~Polynomial();
-
   // accessor
   inline int getMaxOrder() const;
   inline std::string getPolynomial() const;
 
   // mutator
+  bool initPoly();
   bool clear();
   bool setPolynomial(const std::string);
   bool setPolynomial(const int* array, const int maxOrder);
@@ -51,7 +51,8 @@ class Polynomial {
   Polynomial operator+(const Polynomial& another);
   Polynomial operator-(const Polynomial& another);
   Polynomial operator*(const Polynomial& another);
-
+  Polynomial D();
+  int Evaluate(int& x);
   //  Polynomial& operator==(const Polynomial& another);
   //  Polynomial& operator!=(const Polynomial& another);
   //  Polynomial& operator<(const Polynomial& another);
@@ -62,7 +63,7 @@ class Polynomial {
   //  int& operator[](const int x);
   //  friend Polynomial operator-(Polynomial& origin);
 
-  friend std::ostream& operator<<(std::ostream& out,const Polynomial& current);
+  friend std::ostream& operator<<(std::ostream& out, const Polynomial& current);
   friend std::istream& operator>>(std::istream& in, Polynomial& current);
 };
 inline int Polynomial::getMaxOrder() const { return maxOrder; }

@@ -25,9 +25,12 @@ class controller {  // should be singleton Only one
   bool getPolynominal(std::string token, CalcCore::Polynomial& current) const;
   // int getTotalNumbers() const;
   bool isEmpty() const;
+  bool isToken(std::string token) const;
   void showMemory() const;
 
   // mutator
+  bool StoreUnit();
+  bool TransferIt(std::string token1, std::string token2);
   bool storeIt(std::string token, CalcCore::Polynomial& temp);
   bool clear();
   bool CalcUnit(CalcCore::Polynomial (controller::*process)());
@@ -36,6 +39,7 @@ class controller {  // should be singleton Only one
   CalcCore::Polynomial multiplication();
   CalcCore::Polynomial derivation();
   CalcCore::Polynomial evaluation();
+
   bool setExpression(CalcCore::Polynomial& expression);
 
   // singleton creator;

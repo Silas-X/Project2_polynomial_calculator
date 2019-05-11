@@ -15,7 +15,7 @@ Polynomial::Polynomial(const Polynomial& origin) {
 
 Polynomial::~Polynomial() {
   maxOrder = 0;
-  data[0] = 0;
+  initPoly();
 }
 
 // auxiliary
@@ -87,17 +87,23 @@ inline std::string Polynomial::getPolynomial() const {
   // TODO::return a string form;
   return "";
 }
+
+bool Polynomial::initPoly() {
+  for (int i = 0; i <= MAXORDER; i++) {
+    data[i] = 0;
+  }
+  return true;
+}
+
 bool Polynomial::clear() {
   maxOrder = 0;
-  for (int i = 0; i < MAXORDER; i++) data[i] = 0;
-  return true;
+  return initPoly();
 }
 inline bool Polynomial::setMaxOrder(const int x) {
   maxOrder = x;
   return true;
 }
 bool Polynomial::setPolynomial(std::string origin) {
-  // TODO::readIn a String
   this->clear();
   return (this->convert(origin));
 }
@@ -121,6 +127,7 @@ Polynomial& Polynomial::reverse() {
 }
 
 Polynomial& Polynomial::operator=(const Polynomial& origin) {
+  this->clear();
   this->maxOrder = origin.maxOrder;
   copyData(this->data, origin.data, maxOrder + 1);
   return *this;
@@ -160,6 +167,32 @@ Polynomial Polynomial::operator*(const Polynomial& another) {
   return res;
 }
 
+Polynomial Polynomial::D() {
+  Polynomial res;
+  res.setMaxOrder(this->maxOrder - 1);
+  for (int i = 0; i <= res.maxOrder; i++) {
+    res.data[i] = this->data[i + 1] * (i + 1);
+  }
+  return res;
+}
+int power(int base, int power) {
+  int res = 1;
+  while (power > 0) {
+    if (power & 1) res = res * base;
+    power >>= 1;
+    base *= base;
+  }
+  return res;
+}
+
+int Polynomial::Evaluate(int& x) {
+  int res = 0;
+  for (int i = 0; i <= this->maxOrder; i++) {
+    res += this->data[i] * power(x, i);
+  }
+  return res;
+}
+
 /*Polynomial operator-(Polynomial& origin) {
   Polynomial res;
   for (int i = 0; i < origin.maxOrder; i++) {
@@ -180,18 +213,10 @@ std::istream& operator>>(std::istream& in, Polynomial& current) {
   }
   return in;
 }
-/*
-bool operator>>(std::stringstream& in, Polynomial& current) {
-  
 
-}*/
-std::ostream& operator<<(std::ostream& out,const Polynomial& current) {
+std::ostream& operator<<(std::ostream& out, const Polynomial& current) {
   for (int i = current.getMaxOrder(); i >= 0; i--) {
     if (current.data[i] == 0) continue;
-    /*if (i == 0) {
-      std::cout << current.data[i];
-      continue;
-    }*/
     if (i == current.getMaxOrder())
       std::cout << current.data[i] << "x^" << i;
     else {

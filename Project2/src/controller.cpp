@@ -53,7 +53,17 @@ void controller::showMemory() const {
 }
 
 // mutator
-
+bool controller::StoreUnit() {
+  std::string token1, token2;
+  std::cin >> token1 >> token2;
+  if (!(TransferIt(token1, token2) || storeIt(token1, token2)))) {
+    std::cout<<"Invalid input!"<<std::endl;
+  }
+  std::cout << "SUCCESS" << std::endl
+            << token1 << " = " << getPolynominal(token1) << std::endl;
+  return true;
+}
+bool TransferIt(std::string token1, std::string token2) {}
 bool controller::storeIt(std::string token, CalcCore::Polynomial& temp) {
   if (token == LASTANSWER) {
     last_res = temp;
@@ -103,6 +113,11 @@ CalcCore::Polynomial controller::multiplication() {
   return expression1 * expression2;
 }
 
+CalcCore::Polynomial controller::derivation() {
+  CalcCore::Polynomial temp{expression1};
+  return temp.D();
+}
+
 bool controller::setExpression(CalcCore::Polynomial& expression) {
   bool ok = false;
   std::string temp;
@@ -126,7 +141,10 @@ bool controller::setExpression(CalcCore::Polynomial& expression) {
 }
 
 bool controller::CalcUnit(CalcCore::Polynomial (controller::*process)()) {
-  if (!(setExpression(expression1) && setExpression(expression2))) return false;
+  if (process == &this->derivation) {
+    if (!setExpression(expression1)) return false;
+  } else if (!(setExpression(expression1) && setExpression(expression2)))
+    return false;
   CalcCore::Polynomial temp =
       (this->*process)();  // TODO:pointer to a class function?
   std::cout << temp << std::endl;
