@@ -7,8 +7,15 @@
 
 namespace CalcCore {
 Polynomial::Polynomial() : data{0}, maxOrder{0} {}
-Polynomial::Polynomial(std::string) {}  // TODO:Convert String to Polynomial;
-Polynomial::Polynomial(const Polynomial& origin) {
+Polynomial::Polynomial(int x) : data{0}, maxOrder{0} {
+  data[0] = x;
+  maxOrder = 1;
+}
+Polynomial::Polynomial(std::string str) : data{0}, maxOrder{0} {
+  this->setPolynomial(str);
+}
+
+Polynomial::Polynomial(const Polynomial& origin) : data{0}, maxOrder{0} {
   this->maxOrder = origin.maxOrder;
   copyData(this->data, origin.data, this->maxOrder + 1);
 }
@@ -20,39 +27,6 @@ Polynomial::~Polynomial() {
 
 // auxiliary
 // TODO: The dread string operation makes me crazy, any other better methods?
-int Polynomial::num2str(std::string str) {
-  int res;
-  std::stringstream ss;
-  ss.clear();
-  ss << str;
-  ss >> res;
-  return res;
-}
-
-bool Polynomial::insert(std::string tuple) {
-  int pos = tuple.find(',');
-  if (pos == std::string::npos) return false;
-
-  std::string num;
-
-  for (int i = 0; i < pos; i++) {
-    if (!isdigit(tuple[i])) return false;
-    num += tuple[i];
-  }
-  int coefficient = num2str(num);
-  num.clear();
-
-  for (int i = pos + 1; i < tuple.size(); i++) {
-    if (!isdigit(tuple[i])) return false;
-    num += tuple[i];
-  }
-
-  int order = num2str(num);
-  if (order > CalcCore::MAXORDER) return false;
-  this->data[order] += coefficient;
-  if (order > this->maxOrder) this->maxOrder = order;
-  return true;
-}
 
 bool Polynomial::copyData(int* data, const int* origin, int size) {
   if (size > MAXORDER) return false;
@@ -60,25 +34,50 @@ bool Polynomial::copyData(int* data, const int* origin, int size) {
   return true;
 }
 
+bool Polynomial::str2num(std::string str, int& x) {
+  std::stringstream ss;
+  ss.clear();
+  ss.str("");
+  ss << str;
+  ss >> x;
+  return (!ss.fail());
+}
+
+bool Polynomial::insert(const std::string tuple) {
+  int pos = tuple.find(',');
+  if (pos == std::string::npos) return false;
+
+  int coeff;
+  if (!str2num(tuple.substr(0, pos), coeff)) return false;
+
+  int order;
+  if (!str2num(tuple.substr(pos + 1, tuple.size() - pos), order)) return false;
+
+  if (order > MAXORDER) {
+    std::cout << "Sorry, MAX ORDER<=" << MAXORDER << std::endl;
+    return false;
+  }
+  if (order < 0) {
+    std::cout << "Sorry, current only non-negative order is supported"
+              << std::endl;
+    return false;
+  }
+  data[order] += coeff;
+  if (order > this->maxOrder) maxOrder = order;
+  while (data[this->maxOrder] == 0 && this->maxOrder > 0) this->maxOrder--;
+  return true;
+}
+
 bool Polynomial::convert(const std::string str) {
-  if (str[0] != '(') return false;
   std::string temp = str;
   while (!temp.empty()) {
-    int pos_1 = temp.find('(');
-    int pos_2 = temp.find(')');
-
-    //    if (pos_2 = std::string::npos && pos_1 != std::string::npos) return
-    //    false;
-    if (pos_1 >= pos_2) return false;
-
-    std::string tuple = "";
-
-    for (int i = pos_1 + 1; i < pos_2; i++) {
-      tuple = tuple + temp[i];
-    }
-
-    if (!insert(tuple)) return false;
-    temp.erase(pos_1, pos_2 - pos_1 + 1);
+    int pos1 = temp.find('(');
+    int pos2 = temp.find(')');
+    if (pos1 == std::string::npos || pos2 == std::string::npos || pos1 != 0 ||
+        pos1 >= pos2)
+      return false;
+    if (!insert(temp.substr(pos1 + 1, pos2 - pos1 + 1 - 2))) return false;
+    temp = temp.substr(pos2 + 1, temp.size() - pos2);
   }
   return true;
 }
@@ -189,12 +188,13 @@ int power(int base, int power) {
   return res;
 }
 
-int Polynomial::Evaluate(int& x) {
+Polynomial Polynomial::Evaluate(int& x) {
   int res = 0;
   for (int i = 0; i <= this->maxOrder; i++) {
     res += this->data[i] * power(x, i);
   }
-  return res;
+  Polynomial temp{res};
+  return temp;
 }
 
 /*Polynomial operator-(Polynomial& origin) {
@@ -219,6 +219,10 @@ std::istream& operator>>(std::istream& in, Polynomial& current) {
 }
 
 std::ostream& operator<<(std::ostream& out, const Polynomial& current) {
+  if (current.maxOrder == 0 && current.data[0] == 0) {
+    std::cout << "0"  ;
+    return out;
+  }
   for (int i = current.getMaxOrder(); i >= 0; i--) {
     if (current.getMaxOrder() > 0 && current.data[i] == 0) continue;
     if (i == current.getMaxOrder())
@@ -230,7 +234,6 @@ std::ostream& operator<<(std::ostream& out, const Polynomial& current) {
         std::cout << " + " << current.data[i] << "x^" << i;
     }
   }
-  std::cout << std::endl;
   return out;
 }
 }  // namespace CalcCore

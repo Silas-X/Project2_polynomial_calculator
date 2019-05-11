@@ -1,6 +1,6 @@
 #include "controller.h"
 #include <iomanip>
-#include "utilities.h"
+//#include "utilities.h"
 
 namespace ctl {
 controller::controller() : numbers{0} {
@@ -36,10 +36,15 @@ bool controller::getPolynominal(std::string token,
 }
 
 bool controller::isEmpty() const { return numbers; }
+
+bool controller::isExist(std::string token) const {
+  if (!isToken(token)) return false;
+  return (!storage[toupper(token[0]) - 'A'] == NULL);
+}
 bool controller::isToken(std::string token) const {
   if (token == LASTANSWER) return true;
   if (token.size() == 1) {
-    char sym = toupper(token[0]) - 'A';
+    int sym = toupper(token[0]) - 'A';
     if (sym >= 0 && sym < MAXSTORAGE) return true;
   }
   return false;
@@ -50,20 +55,21 @@ void controller::showMemory() const {
 
     std::cout << "\t" << sym << "= ";
     if (storage[i] == NULL)
-      std::cout << std::endl;
+      std::cout << "NaN" << std::endl;
     else
       std::cout << *storage[i] << std::endl;
-    ;
   }
   std::cout << "\t LAST RESULT = " << last_res << std::endl;
-  std::cout << std::endl;
 }
 
 // mutator
 bool controller::StoreUnit() {
   std::string token1, token2;
   std::cout << "Please enter expression" << std::endl
-            << "Format: [symbol] [expression] or [symbol] [symbol]"
+            << "Format: [Target_symbol:[A-Z]] "
+               "[expression:[(base1,order1)(base2,order2)...]] or "
+               "[Target_symbol:[A-Z]] "
+               "[Source_symbol:[A-Z]]"
             << std::endl;
   std::cin >> token1 >> token2;
   if (!(TransferIt(token1, token2) || storeIt(token1, token2))) {
@@ -109,7 +115,6 @@ bool controller::storeIt(std::string token, CalcCore::Polynomial temp) {
     storage[code] = NULL;
   }
   storage[code] = new CalcCore::Polynomial{temp};
-  std::cout << sym << "=" << *storage[code] << std::endl;
   numbers++;
   return true;
 }
@@ -142,12 +147,21 @@ CalcCore::Polynomial controller::derivation() {
   return temp.D();
 }
 
+CalcCore::Polynomial controller::evaluation() {
+  std::cout << "Please enter a integer X= ";
+  int x;
+  std::cin >> x;
+  return expression1.Evaluate(x);
+}
+
 bool controller::setExpression(CalcCore::Polynomial& expression) {
   bool ok = false;
   std::string temp;
   while (!ok) {
-    std::cout << "Please enter a expression or a symbol, exit to cancel"
-              << std::endl;
+    std::cout
+        << "Please enter a [expression:[(base1,order1)(base2,order2)...]] or a "
+           "[symbol:[A-Z]], [exit] to cancel"
+        << std::endl;
     std::cin >> temp;
     if (temp == "Exit" || temp == "exit") return false;
     if (getPolynominal(temp, expression)) {
@@ -158,30 +172,45 @@ bool controller::setExpression(CalcCore::Polynomial& expression) {
       ok = true;
       continue;
     }
+    std::cout << "Failed, please checkout if it exists or the format is right."
+              << std::endl;
   }
-  std::cout << "SUCCESS" << std::endl;
-  std::cout << "Expression : " << expression << std::endl;
+  std::cout << "SUCCESS" << std::endl
+            << "Expression: " << expression << std::endl;
+
   return true;
 }
 
 bool controller::CalcUnit(CalcCore::Polynomial (controller::*process)()) {
-  if (process == &this->derivation) {
+  if (process == &this->derivation || process == &this->evaluation) {
     if (!setExpression(expression1)) return false;
   } else if (!(setExpression(expression1) && setExpression(expression2)))
     return false;
   CalcCore::Polynomial temp =
       (this->*process)();  // TODO:pointer to a class function?
   std::cout << temp << std::endl;
+  storeIt(LASTANSWER, temp);
   std::cout << "Do you want to store your answer?(y/n)" << std::endl;
 
   std::string flag;
-  std::getline(std::cin, flag);
+  std::cin >> flag;
   while (flag != "y" && flag != "Y" && (flag != "N") && (flag != "n")) {
-    std::getline(std::cin, flag);
+    std::cin >> flag;
   }
 
   if (flag == "y" || flag == "Y") {
-    storeIt(LASTANSWER, temp);
+    std::cout << "Please enter [symbol:[A-Z]]" << std::endl;
+    std::string sym;
+    std::cin >> sym;
+    while (!TransferIt(sym, LASTANSWER)) {
+      std::cout << "Failed, Please enter [symbol:[A-Z]]" << std::endl;
+      std::cin >> sym;
+      if (sym == "Exit") {
+        std::cout << "Cancel" << std::endl;
+        break;
+      }
+    }
+    if (sym != "Exit") std::cout << "SUCCESS" << std::endl;
   }
   return true;
 }

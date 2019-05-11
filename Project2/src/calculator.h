@@ -13,14 +13,15 @@ class Polynomial {
   int data[MAXORDER + 1];
   int maxOrder;
   // auxilary
-  int num2str(std::string);
   bool insert(std::string tuple);
+  bool str2num(std::string tuple, int& x);
   bool copyData(int* data, const int* origin, int size);
   bool convert(const std::string str);
 
  public:
   // constructor
   Polynomial();
+  Polynomial(int x);
   Polynomial(std::string);
   Polynomial(const Polynomial& origin);
 
@@ -52,7 +53,7 @@ class Polynomial {
   Polynomial operator-(const Polynomial& another);
   Polynomial operator*(const Polynomial& another);
   Polynomial D();
-  int Evaluate(int& x);
+  Polynomial Evaluate(int& x);
   //  Polynomial& operator==(const Polynomial& another);
   //  Polynomial& operator!=(const Polynomial& another);
   //  Polynomial& operator<(const Polynomial& another);
