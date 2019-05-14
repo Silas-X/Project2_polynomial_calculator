@@ -39,7 +39,7 @@ bool controller::isEmpty() const { return numbers; }
 
 bool controller::isExist(std::string token) const {
   if (!isToken(token)) return false;
-  return (!storage[toupper(token[0]) - 'A'] == NULL);
+  return (!(storage[toupper(token[0]) - 'A'] == NULL));
 }
 bool controller::isToken(std::string token) const {
   if (token == LASTANSWER) return true;
@@ -65,13 +65,16 @@ void controller::showMemory() const {
 // mutator
 bool controller::StoreUnit() {
   std::string token1, token2;
-  std::cout << "Please enter expression" << std::endl
-            << "Format: [Target_symbol:[A-Z]] "
-               "[expression:[(base1,order1)(base2,order2)...]] or "
-               "[Target_symbol:[A-Z]] "
-               "[Source_symbol:[A-Z]]"
-            << std::endl;
-  std::cin >> token1 >> token2;
+  std::cout << "Please enter an  expression" << std::endl
+            << "Format: [Target_symbol:[A-Z]] [expression:[(base1,order1)(base2,order2)...]]"<< std::endl
+            << "    or: [Target_symbol:[A-Z]] [Source_symbol:[A - Z]] "<< std::endl
+            << "[Exit] to cancel" << std::endl;
+  std::cin >> token1;
+  if (token1 == "Exit" || token1 == "exit" || token1 == "EXIT") {
+    std::cout << "Canceled" << std::endl;
+    return false;
+  }
+  std::cin >> token2;
   if (!(TransferIt(token1, token2) || storeIt(token1, token2))) {
     std::cout << "Invalid input!" << std::endl;
     return false;
@@ -92,8 +95,13 @@ bool controller::TransferIt(std::string token1, std::string token2) {
 bool controller::storeIt(std::string token1, std::string token2) {
   CalcCore::Polynomial temp;
   if (!temp.setPolynomial(token2)) return false;
-  return storeIt(token1, temp);
+  if (storeIt(token1, temp)) {
+    numbers++;
+    return true;
+  }
+  return false;
 }
+
 bool controller::storeIt(std::string token, CalcCore::Polynomial temp) {
   if (token == LASTANSWER) {
     last_res = temp;
@@ -115,10 +123,40 @@ bool controller::storeIt(std::string token, CalcCore::Polynomial temp) {
     storage[code] = NULL;
   }
   storage[code] = new CalcCore::Polynomial{temp};
-  numbers++;
+
   return true;
 }
 
+bool controller::deleteUnit() {
+  std::cout << "Delete Mode" << std::endl;
+  std::cout << "Please enter target symbol [A-Z], Exit to cancel" << std::endl;
+  std::string token;
+  std::cin >> token;
+
+  if (token == "Exit" || token == "exit" || token == "EXIT") {
+    std::cout << "Canceled" << std::endl;
+    // sleep(0.001);
+  }
+  if (token == LASTANSWER) {
+    std::cout << "==============WARING================" << std::endl;
+    std::cout << "Unable to manipulate protected areas" << std::endl;
+    return false;
+  }
+  return (erase(token));
+}
+
+bool controller::erase(std::string token) {
+  if (!isToken(token)) return false;
+  if (token == LASTANSWER) return false;
+  int code = toupper(token[0]) - 'A';
+  if (storage[code] == NULL) return false;
+  CalcCore::Polynomial temp = *storage[code];
+  delete storage[code];
+  storage[code] = NULL;
+  numbers--;
+  std::cout << "Expression" << token << "Delete Successfully" << std::endl;
+  return true;
+}
 bool controller::clear() {
   for (int i = 0; i < MAXSTORAGE; i++) {
     if (storage[i] != NULL) {
