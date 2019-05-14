@@ -34,7 +34,11 @@ class controller {  // should be singleton Only one
   bool TransferIt(std::string token1, std::string token2);
   bool storeIt(std::string token1, std::string token2);
   bool storeIt(std::string token1, CalcCore::Polynomial temp);
+
+  bool deleteUnit();
+  bool erase(std::string token);
   bool clear();
+
   bool CalcUnit(CalcCore::Polynomial (controller::*process)());
   CalcCore::Polynomial addition();
   CalcCore::Polynomial substraction();

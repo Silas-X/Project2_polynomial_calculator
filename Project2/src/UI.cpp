@@ -154,12 +154,13 @@ void UserInterface::calcMenu() {
   std::cout << "             Introduction             " << std::endl
             << std::endl;
   std::cout << "[1] Add new expression to the memory" << std::endl;
-  std::cout << "[2] View Memory" << std::endl;
-  std::cout << "[3] Addition" << std::endl;
-  std::cout << "[4] Substraction" << std::endl;
-  std::cout << "[5] Multiplication" << std::endl;
-  std::cout << "[6] Derivation" << std::endl;
-  std::cout << "[7] Evaluation" << std::endl;
+  std::cout << "[2] Delete a record" << std::endl;
+  std::cout << "[3] View Memory" << std::endl;
+  std::cout << "[4] Addition" << std::endl;
+  std::cout << "[5] Substraction" << std::endl;
+  std::cout << "[6] Multiplication" << std::endl;
+  std::cout << "[7] Derivation" << std::endl;
+  std::cout << "[8] Evaluation" << std::endl;
   std::cout << "[0] Return to upper menu" << std::endl;
   setCallMenu(2);
   setOption();
@@ -168,23 +169,27 @@ void UserInterface::calcMenu() {
       setCallMenu(1);
       break;
     case 1:
+      butler->StoreUnit();
       break;
     case 2:
-      butler->showMemory();
+      butler->deleteUnit();
       break;
     case 3:
-      butler->CalcUnit(ctl::controller::addition);  //含修饰符的函数如何传递
+      butler->showMemory();
       break;
     case 4:
-      butler->CalcUnit(ctl::controller::substraction);
+      butler->CalcUnit(ctl::controller::addition);  //含修饰符的函数如何传递
       break;
     case 5:
-      butler->CalcUnit(ctl::controller::multiplication);
+      butler->CalcUnit(ctl::controller::substraction);
       break;
     case 6:
-      butler->CalcUnit(ctl::controller::derivation);
+      butler->CalcUnit(ctl::controller::multiplication);
       break;
     case 7:
+      butler->CalcUnit(ctl::controller::derivation);
+      break;
+    case 8:
       butler->CalcUnit(ctl::controller::evaluation);
     default:
       break;
@@ -198,7 +203,7 @@ void UserInterface::StatusBar() {
     std::string token = "";
     token += static_cast<char>(i + 'A');
     if (butler->isExist(token)) {
-      std::cout << token<<" ";
+      std::cout << token << " ";
       num++;
     }
   }

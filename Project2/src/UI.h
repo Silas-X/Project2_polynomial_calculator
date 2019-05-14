@@ -26,7 +26,7 @@ class UserInterface {
   void mainMenu();     // 1
   void calcMenu();     // 2
                        // friend void ctl::controller::start();
-  void StatusBar(); 
+  void StatusBar();
 };
 
 }  // namespace UI
