@@ -14,7 +14,6 @@ class controller {  // should be singleton Only one
   int numbers;
   static controller* commander;
 
-  // CalcCore::Polynomial findPolynominal(char sym) const;
   // Singleton contructor
   controller();
 
@@ -23,22 +22,25 @@ class controller {  // should be singleton Only one
 
   // accessor
   bool getPolynominal(std::string token, CalcCore::Polynomial& current) const;
-  // int getTotalNumbers() const;
   bool isExist(std::string token) const;
   bool isEmpty() const;
-  bool isToken(std::string token) const;
+  bool isToken(std::string token) const; //判断用户写入数据是否符合存储token
   void showMemory() const;
 
   // mutator
+
+  // Store Unit
   bool StoreUnit();
   bool TransferIt(std::string token1, std::string token2);
   bool storeIt(std::string token1, std::string token2);
   bool storeIt(std::string token1, CalcCore::Polynomial temp);
 
+  // Delete Unit
   bool deleteUnit();
   bool erase(std::string token);
   bool clear();
 
+  // Calculate Unit
   bool CalcUnit(CalcCore::Polynomial (controller::*process)());
   CalcCore::Polynomial addition();
   CalcCore::Polynomial substraction();

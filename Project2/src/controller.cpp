@@ -68,7 +68,7 @@ bool controller::StoreUnit() {
   std::cout << "Please enter an  expression" << std::endl
             << "Format: [Target_symbol:[A-Z]] [expression:[(base1,order1)(base2,order2)...]]"<< std::endl
             << "    or: [Target_symbol:[A-Z]] [Source_symbol:[A - Z]] "<< std::endl
-            << "[Exit] to cancel" << std::endl;
+            << "[Exit] to cancel, [RES] to call Last Answer" << std::endl;
   std::cin >> token1;
   if (token1 == "Exit" || token1 == "exit" || token1 == "EXIT") {
     std::cout << "Canceled" << std::endl;
@@ -135,7 +135,6 @@ bool controller::deleteUnit() {
 
   if (token == "Exit" || token == "exit" || token == "EXIT") {
     std::cout << "Canceled" << std::endl;
-    // sleep(0.001);
   }
   if (token == LASTANSWER) {
     std::cout << "==============WARING================" << std::endl;

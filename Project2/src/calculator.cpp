@@ -26,7 +26,6 @@ Polynomial::~Polynomial() {
 }
 
 // auxiliary
-// TODO: The dread string operation makes me crazy, any other better methods?
 
 bool Polynomial::copyData(int* data, const int* origin, int size) {
   if (size > MAXORDER) return false;
@@ -82,10 +81,6 @@ bool Polynomial::convert(const std::string str) {
   return true;
 }
 
-inline std::string Polynomial::getPolynomial() const {
-  // TODO::return a string form;
-  return "";
-}
 
 bool Polynomial::initPoly() {
   for (int i = 0; i <= MAXORDER; i++) {
@@ -197,15 +192,7 @@ Polynomial Polynomial::Evaluate(int& x) {
   return temp;
 }
 
-/*Polynomial operator-(Polynomial& origin) {
-  Polynomial res;
-  for (int i = 0; i < origin.maxOrder; i++) {
-    res.data[i] = -origin.data[i];
-  }
-  res.maxOrder = origin.maxOrder;
-  return res;
-}
-*/
+
 std::istream& operator>>(std::istream& in, Polynomial& current) {
   std::string temp;
   in >> temp;
